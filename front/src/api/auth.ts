@@ -5,7 +5,12 @@ import {axiosInstance} from './axios';
 type RequestUser = {email: string; password: string};
 
 const postSignup = async ({email, password}: RequestUser): Promise<void> => {
-  const {data} = await axiosInstance.post(`/auth/signup`, {email, password});
+  console.log('post signup ', email, password);
+  const {data} = await axiosInstance.post('/auth/signup', {
+    email,
+    password,
+  });
+  console.log('signup data', data);
   return data;
 };
 
@@ -30,7 +35,6 @@ type ResponseProfile = Profile & Category;
 
 const getProfile = async (): Promise<ResponseProfile> => {
   const {data} = await axiosInstance.get('/auth/me');
-
   return data;
 };
 
