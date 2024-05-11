@@ -5,17 +5,15 @@ import {
   logout,
   postLogin,
   postSignup,
-} from '../../api/auth';
+} from '@/api/auth';
 
-import {
-  UseMutationCustomOptions,
-  UseQueryCustomOptions,
-} from '../../types/common';
-import {removeEncryptStorage, setEncryptStorage} from '../../utils';
+import {UseMutationCustomOptions, UseQueryCustomOptions} from '@/types/common';
+import {removeEncryptStorage, setEncryptStorage} from '@/utils';
 
-import {removeHeader, setHeader} from '../../utils/header';
+import {removeHeader, setHeader} from '@/utils/header';
 import {useEffect} from 'react';
-import {queryClient} from '../../api/queryClient';
+import {queryClient} from '@/api/queryClient';
+import {numbers, queryKey, storageKeys} from '@/constants';
 
 function useSignup(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
@@ -28,13 +26,17 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
   return useMutation({
     mutationFn: postLogin,
     onSuccess: ({accessToken, refreshToken}) => {
-      setEncryptStorage('refreshToken', refreshToken);
+      setEncryptStorage(storageKeys.REFRESH_TOKEN, refreshToken);
       setHeader('Authorization', `Bearer ${accessToken}`);
     },
     onSettled: (error, data) => {
       console.log(data);
-      queryClient.refetchQueries({queryKey: ['auth', 'getAccessToken']});
-      queryClient.invalidateQueries({queryKey: ['auth', 'getProfile']});
+      queryClient.refetchQueries({
+        queryKey: [queryKey.AUTH, queryKey.GET_ACCESS_TOKEN],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [queryKey.AUTH, queryKey.GET_PROFILE],
+      });
     },
     ...mutationOptions,
   });
@@ -42,10 +44,10 @@ function useLogin(mutationOptions?: UseMutationCustomOptions) {
 
 function useGetRefreshToken() {
   const {isSuccess, isError, data} = useQuery({
-    queryKey: ['auth', 'getAccessToken'],
+    queryKey: [queryKey.AUTH, queryKey.GET_ACCESS_TOKEN],
     queryFn: getAccessToken,
-    staleTime: 1000 * 60 * 30 - 1000 * 60 * 3,
-    refetchInterval: 1000 * 60 * 30 - 1000 * 60 * 3,
+    staleTime: numbers.ACCESS_TOKEN_REFRESH_TIME,
+    refetchInterval: numbers.ACCESS_TOKEN_REFRESH_TIME,
     refetchOnReconnect: true,
     refetchIntervalInBackground: true,
   });
@@ -53,14 +55,14 @@ function useGetRefreshToken() {
   useEffect(() => {
     if (isSuccess) {
       setHeader('Authorization', `Bearer ${data.accessToken}`);
-      setEncryptStorage('refreshToken', data.refreshToken);
+      setEncryptStorage(storageKeys.REFRESH_TOKEN, data.refreshToken);
     }
   }, [isSuccess]);
 
   useEffect(() => {
     if (isError) {
       removeHeader('Authorization');
-      removeEncryptStorage('refreshToken');
+      removeEncryptStorage(storageKeys.REFRESH_TOKEN);
     }
   }, [isError]);
 
@@ -69,7 +71,7 @@ function useGetRefreshToken() {
 
 function useGetProfile(queryOptions?: UseQueryCustomOptions) {
   return useQuery({
-    queryKey: ['auth', 'getProfile'],
+    queryKey: [queryKey.AUTH, queryKey.GET_PROFILE],
     queryFn: getProfile,
     ...queryOptions,
   });
@@ -80,10 +82,10 @@ function useLogout(mutationOptions?: UseMutationOptions) {
     mutationFn: logout,
     onSuccess: () => {
       removeHeader('Authorization');
-      removeEncryptStorage('refreshToken');
+      removeEncryptStorage(storageKeys.REFRESH_TOKEN);
     },
     onSettled: () => {
-      queryClient.invalidateQueries({queryKey: ['auth']});
+      queryClient.invalidateQueries({queryKey: [queryKey.AUTH]});
     },
     ...mutationOptions,
   });

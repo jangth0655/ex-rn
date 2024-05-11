@@ -1,13 +1,12 @@
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import InputField from '../../components/InputField';
-import {useForm} from '../../hooks/useForm';
-import CustomButton from '../../components/CustomButton';
-import {validateSignUp} from '../../utils';
+import InputField from '@/components/InputField';
+import {useForm} from '@/hooks/useForm';
+import CustomButton from '@/components/CustomButton';
+import {validateSignUp} from '@/utils';
 import {useRef} from 'react';
 import {TextInput} from 'react-native-gesture-handler';
-import useAuth from '../../hooks/queries/useAuth';
-import axios from 'axios';
+import useAuth from '@/hooks/queries/useAuth';
 
 export default function SignupScreen() {
   const {signupMutation, loginMutation} = useAuth();
