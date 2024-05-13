@@ -12,6 +12,7 @@ const authNavigation = {
 
 const mapNavigation = {
   MAP_HOME: 'MapHome',
+  ADD_POST: 'AddPost',
 } as const;
 
 export {authNavigation, mapNavigation, mainNavigation};
