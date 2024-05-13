@@ -1,5 +1,6 @@
 export const colors = {
   PINK_200: '#fae2e9',
+  PINK_400: '#ec87a5',
   PINK_500: '#bf5c79',
   PINK_700: '#c63b64',
   GRAY_100: '#f8f8f8',
@@ -8,6 +9,10 @@ export const colors = {
   GRAY_700: '#575757',
   RED_300: '#ffb4b4',
   RED_500: '#ff5f5f',
+  BLUE_400: '#b4e0ff',
+  GREEN_400: '#cce6b4',
+  YELLOW_400: '#ffe594',
+  PURPLE_400: '#c4c4e7',
   WHITE: '#ffffff',
   BLACK: '#000000',
 };

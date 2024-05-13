@@ -12,7 +12,8 @@ export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
   const {getProfileQuery} = useAuth();
-  const {email, nickname, imageUri, kakaoImageUri} = getProfileQuery.data || {};
+  const {email, nickname, imageUri, kakaoImageUri} =
+    getProfileQuery.data as any;
 
   return (
     <SafeAreaView style={styles.container}>

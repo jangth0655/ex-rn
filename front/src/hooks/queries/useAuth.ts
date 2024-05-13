@@ -1,5 +1,6 @@
 import {UseMutationOptions, useMutation, useQuery} from '@tanstack/react-query';
 import {
+  ResponseProfile,
   getAccessToken,
   getProfile,
   logout,
@@ -7,7 +8,11 @@ import {
   postSignup,
 } from '@/api/auth';
 
-import {UseMutationCustomOptions, UseQueryCustomOptions} from '@/types/common';
+import {
+  ResponseError,
+  UseMutationCustomOptions,
+  UseQueryCustomOptions,
+} from '@/types/common';
 import {removeEncryptStorage, setEncryptStorage} from '@/utils';
 
 import {removeHeader, setHeader} from '@/utils/header';
