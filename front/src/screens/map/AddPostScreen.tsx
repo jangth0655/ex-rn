@@ -19,7 +19,7 @@ import {validateAddPost} from '@/utils';
 import {getDateWithSeparator} from '@/utils/date';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useEffect, useRef, useState} from 'react';
-import {Image, Platform, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -138,7 +138,11 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
           <View style={styles.imagesViewer}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <ImageInput onChange={imagePicker.handleChange} />
-              <PreviewImageList imageUris={imagePicker.imagesUris} />
+              <PreviewImageList
+                imageUris={imagePicker.imagesUris}
+                onDelete={imagePicker.deleteImageUri}
+                onChangeOrder={imagePicker.changeImageUrisOrder}
+              />
             </ScrollView>
           </View>
           <DatePickerOption
