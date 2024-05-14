@@ -4,6 +4,7 @@ import InputField from '@/components/InputField';
 import {colors, mapNavigation} from '@/constants';
 import {useMutateCreatePost} from '@/hooks/queries/useMutateCreatePost';
 import {useForm} from '@/hooks/useForm';
+import {useGetAddress} from '@/hooks/useGetAddress';
 import {MapStackParamList} from '@/navigations/stack/MapStackNavigator';
 import {MarkerColor} from '@/types/domain';
 import {validateAddPost} from '@/utils';
@@ -33,7 +34,7 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
 
   const [markerColor, setMarkerColor] = useState<MarkerColor>('RED');
   const [score, setScore] = useState(5);
-  const [address, setAddress] = useState('');
+  const address = useGetAddress(location);
 
   const handleSubmit = () => {
     const body = {
@@ -63,7 +64,7 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
       <ScrollView style={styles.contentContainer}>
         <View style={styles.inputContainer}>
           <InputField
-            value=""
+            value={address}
             disabled
             icon={
               <Octicons name="location" size={16} color={colors.GRAY_500} />

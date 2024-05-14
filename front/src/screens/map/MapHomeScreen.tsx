@@ -1,4 +1,4 @@
-import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Alert, Pressable, StyleSheet, View} from 'react-native';
 import MapView, {
   Callout,
   LatLng,
