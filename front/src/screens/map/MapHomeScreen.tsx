@@ -44,8 +44,8 @@ export default function MapHomeScreen() {
     mapRef.current?.animateToRegion({
       latitude: userLocation?.latitude,
       longitude: userLocation?.longitude,
-      longitudeDelta: 0.0421,
       latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
     });
   };
 
@@ -78,7 +78,12 @@ export default function MapHomeScreen() {
         followsUserLocation
         showsMyLocationButton={false}
         customMapStyle={mapStyle}
-        onLongPress={handleLongPressMapView}>
+        onLongPress={handleLongPressMapView}
+        region={{
+          ...userLocation,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        }}>
         <Marker
           coordinate={{
             latitude: 37.5516032365118,

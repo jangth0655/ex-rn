@@ -1,21 +1,25 @@
 import AddPostHeaderRight from '@/components/AddPostHeaderRight';
 import CustomButton from '@/components/CustomButton';
 import DatePickerOption from '@/components/DatePickerOption';
+import ImageInput from '@/components/ImageInput';
 import InputField from '@/components/InputField';
 import MarkerSelector from '@/components/MarkerSelector';
+import PreviewImageList from '@/components/PreviewImageList';
 import ScoreInput from '@/components/ScoreInput';
 import {colors, mapNavigation} from '@/constants';
 import {useMutateCreatePost} from '@/hooks/queries/useMutateCreatePost';
 import {useForm} from '@/hooks/useForm';
 import {useGetAddress} from '@/hooks/useGetAddress';
+import {useImagePicker} from '@/hooks/useImagePicker';
 import {useModal} from '@/hooks/useModal';
+import usePermission from '@/hooks/usePermission';
 import {MapStackParamList} from '@/navigations/stack/MapStackNavigator';
 import {MarkerColor} from '@/types/domain';
 import {validateAddPost} from '@/utils';
 import {getDateWithSeparator} from '@/utils/date';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useEffect, useRef, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {Image, Platform, StyleSheet, Text, View} from 'react-native';
 import {ScrollView, TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Octicons from 'react-native-vector-icons/Octicons';
@@ -27,6 +31,7 @@ type AddPostScreenProps = StackScreenProps<
 
 export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
   const {location} = route.params;
+  usePermission('PHOTO');
   const descriptionRef = useRef<TextInput | null>(null);
   const createPost = useMutateCreatePost();
   const addPost = useForm({
@@ -35,6 +40,9 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
       description: '',
     },
     validate: validateAddPost,
+  });
+  const imagePicker = useImagePicker({
+    initialImages: [],
   });
 
   const [markerColor, setMarkerColor] = useState<MarkerColor>('RED');
@@ -70,6 +78,7 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
       score,
       imageUris: [],
     };
+
     createPost.mutate(
       {address, ...location, ...body},
       {
@@ -126,7 +135,12 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
             onPressMarker={handleSelectMarker}
           />
           <ScoreInput score={score} onChangeScore={handleScore} />
-
+          <View style={styles.imagesViewer}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <ImageInput onChange={imagePicker.handleChange} />
+              <PreviewImageList imageUris={imagePicker.imagesUris} />
+            </ScrollView>
+          </View>
           <DatePickerOption
             date={date}
             isVisible={isVisible}
@@ -151,5 +165,8 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     marginBottom: 10,
+  },
+  imagesViewer: {
+    flexDirection: 'row',
   },
 });
