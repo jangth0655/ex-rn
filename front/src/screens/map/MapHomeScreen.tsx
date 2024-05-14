@@ -20,6 +20,7 @@ import {useRef, useState} from 'react';
 import {useUserLocation} from '@/hooks/useUserLocation';
 import {mapStyle} from '@/style/mapStyle';
 import {CustomMarker} from '@/components/CustomMarker';
+import {useGetMarkers} from '@/hooks/queries/useGetMarkers';
 
 type Navigation = CompositeNavigationProp<
   StackNavigationProp<MapStackParamList>,
@@ -32,6 +33,7 @@ export default function MapHomeScreen() {
   const mapRef = useRef<MapView | null>(null);
   const {isUserLocationError, userLocation} = useUserLocation();
   const [selectLocation, setSelectLocation] = useState<LatLng | null>(null);
+  const {data: markers = []} = useGetMarkers();
 
   // 위치로 이동시키기
   const handlePressUserLocation = () => {
@@ -83,6 +85,14 @@ export default function MapHomeScreen() {
             longitude: 126.98989626020192,
           }}
         />
+        {markers.map(({id, color, score, ...coordinate}) => (
+          <CustomMarker
+            key={id}
+            color={color}
+            score={score}
+            coordinate={coordinate}
+          />
+        ))}
         {selectLocation && (
           <Callout>
             <CustomMarker color="BLUE" coordinate={selectLocation} score={2} />

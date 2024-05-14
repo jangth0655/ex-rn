@@ -15,13 +15,14 @@ interface Props extends TextInputProps {
   disabled?: boolean;
   error?: string;
   touched?: boolean;
+  icon?: React.ReactNode;
 }
 
 const deviceHeight = Dimensions.get('screen').height;
 
 const InputField = forwardRef(
   (
-    {disabled = false, error, touched, ...props}: Props,
+    {disabled = false, error, touched, icon = null, ...props}: Props,
     ref?: ForwardedRef<TextInput>,
   ) => {
     const innerRef = useRef<TextInput | null>(null);
@@ -36,17 +37,21 @@ const InputField = forwardRef(
             styles.container,
             disabled && styles.disabled,
             touched && Boolean(error) && styles.inputError,
+            props.multiline && styles.multiLine,
           ]}>
-          <TextInput
-            ref={ref ? mergeRefs(innerRef, ref) : innerRef}
-            editable={!disabled}
-            placeholderTextColor={colors.GRAY_500}
-            {...props}
-            style={[styles.input, disabled && styles.disabled]}
-            autoCapitalize="none"
-            autoCorrect={false}
-            spellCheck={false}
-          />
+          <View style={Boolean(icon) && styles.innerContainer}>
+            {icon}
+            <TextInput
+              ref={ref ? mergeRefs(innerRef, ref) : innerRef}
+              editable={!disabled}
+              placeholderTextColor={colors.GRAY_500}
+              {...props}
+              style={[styles.input, disabled && styles.disabled]}
+              autoCapitalize="none"
+              autoCorrect={false}
+              spellCheck={false}
+            />
+          </View>
           {touched && Boolean(error) && (
             <Text style={styles.error}>{error}</Text>
           )}
@@ -61,6 +66,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.GRAY_200,
     padding: deviceHeight > 700 ? 15 : 10,
+  },
+  innerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  multiLine: {
+    paddingBottom: deviceHeight > 700 ? 45 : 30,
   },
   input: {
     fontSize: 14,

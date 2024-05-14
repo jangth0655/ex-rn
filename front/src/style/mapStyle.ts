@@ -67,20 +67,26 @@ export const mapStyle = [
     elementType: 'labels.icon',
     stylers: [
       {
-        color: '#746c20',
+        visibility: 'off',
       },
+    ],
+  },
+  {
+    featureType: 'road.arterial',
+    elementType: 'labels.icon',
+    stylers: [
       {
         visibility: 'off',
       },
     ],
   },
   {
-    featureType: 'road.highway',
+    featureType: 'road.highway.controlled_access',
     elementType: 'labels.icon',
     stylers: [
-      // {
-      //   color: '#000000',
-      // },
+      {
+        visibility: 'off',
+      },
     ],
   },
   {
