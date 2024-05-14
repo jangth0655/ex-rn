@@ -7,6 +7,7 @@ import {MarkerColor} from '@/types/domain';
 interface MarkerSelectorProps {
   markerColor: MarkerColor;
   onPressMarker: (color: MarkerColor) => void;
+  score: number;
 }
 
 const categoryList: MarkerColor[] = [
@@ -20,6 +21,7 @@ const categoryList: MarkerColor[] = [
 export default function MarkerSelector({
   markerColor,
   onPressMarker,
+  score = 5,
 }: MarkerSelectorProps) {
   return (
     <View style={styles.container}>
@@ -35,7 +37,7 @@ export default function MarkerSelector({
                   styles.markerBox,
                   markerColor === color && styles.pressedMarker,
                 ]}>
-                <CustomMarker color={color} />
+                <CustomMarker color={color} score={score} />
               </Pressable>
             );
           })}
