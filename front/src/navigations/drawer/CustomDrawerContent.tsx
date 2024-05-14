@@ -12,8 +12,7 @@ export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
 ) {
   const {logoutMutation, getProfileQuery} = useAuth();
-  const {email, nickname, imageUri, kakaoImageUri} =
-    getProfileQuery.data as any;
+  const {email, nickname, imageUri, kakaoImageUri} = getProfileQuery.data!;
 
   const handleLogout = () => {
     logoutMutation.mutate();

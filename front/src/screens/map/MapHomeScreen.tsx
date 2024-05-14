@@ -21,6 +21,8 @@ import {useUserLocation} from '@/hooks/useUserLocation';
 import {mapStyle} from '@/style/mapStyle';
 import {CustomMarker} from '@/components/CustomMarker';
 import {useGetMarkers} from '@/hooks/queries/useGetMarkers';
+import MarkerModal from '@/components/MarkerModal';
+import {useModal} from '@/hooks/useModal';
 
 type Navigation = CompositeNavigationProp<
   StackNavigationProp<MapStackParamList>,
@@ -34,6 +36,22 @@ export default function MapHomeScreen() {
   const {isUserLocationError, userLocation} = useUserLocation();
   const [selectLocation, setSelectLocation] = useState<LatLng | null>(null);
   const {data: markers = []} = useGetMarkers();
+  const [markerId, setMarkerId] = useState<number | null>(null);
+  const markerModal = useModal();
+
+  const moveMapView = (coordinate: LatLng) => {
+    mapRef.current?.animateToRegion({
+      ...coordinate,
+      latitudeDelta: 0.0922,
+      longitudeDelta: 0.0421,
+    });
+  };
+
+  const handlePressMarker = (id: number, coordinate: LatLng) => {
+    moveMapView(coordinate);
+    setMarkerId(id);
+    markerModal.show;
+  };
 
   // 위치로 이동시키기
   const handlePressUserLocation = () => {
@@ -41,12 +59,7 @@ export default function MapHomeScreen() {
       // error message
       return;
     }
-    mapRef.current?.animateToRegion({
-      latitude: userLocation?.latitude,
-      longitude: userLocation?.longitude,
-      latitudeDelta: 0.0922,
-      longitudeDelta: 0.0421,
-    });
+    moveMapView(userLocation);
   };
 
   const handleLongPressMapView = ({nativeEvent}: LongPressEvent) => {
@@ -96,11 +109,12 @@ export default function MapHomeScreen() {
             color={color}
             score={score}
             coordinate={coordinate}
+            onPress={() => handlePressMarker(id, coordinate)}
           />
         ))}
         {selectLocation && (
           <Callout>
-            <CustomMarker color="BLUE" coordinate={selectLocation} score={2} />
+            <Marker coordinate={selectLocation} />
           </Callout>
         )}
       </MapView>
@@ -117,6 +131,11 @@ export default function MapHomeScreen() {
           <MaterialIcons name="my-location" color={colors.WHITE} size={25} />
         </Pressable>
       </View>
+      <MarkerModal
+        markerId={markerId}
+        isVisible={markerModal.isVisible}
+        hide={markerModal.hide}
+      />
     </>
   );
 }

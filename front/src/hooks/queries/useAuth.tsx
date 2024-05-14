@@ -74,7 +74,7 @@ function useGetRefreshToken() {
   return {isError, isSuccess};
 }
 
-function useGetProfile(queryOptions?: UseQueryCustomOptions) {
+function useGetProfile(queryOptions?: UseQueryCustomOptions<ResponseProfile>) {
   return useQuery({
     queryKey: [queryKey.AUTH, queryKey.GET_PROFILE],
     queryFn: getProfile,
