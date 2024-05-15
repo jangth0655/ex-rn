@@ -21,7 +21,7 @@ import {
 } from 'react-native';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {getDateLocateForm, getDateWithSeparator} from '@/utils/date';
+import {getDateLocateForm} from '@/utils/date';
 import PreviewImageList from '@/components/common/PreviewImageList';
 import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -31,6 +31,8 @@ import {MainDrawerParamList} from '@/navigations/drawer/MainDrawerNavigator';
 import {useLocationStore} from '@/store/useLocation';
 import {useModal} from '@/hooks/useModal';
 import FeedDetailOption from '@/components/feed/FeedDetailOption';
+import {useEffect} from 'react';
+import {useDetailPostStore} from '@/store/useDetailPostStore';
 
 type Props = CompositeScreenProps<
   StackScreenProps<FeedStackParamList, typeof feedNavigator.FEED_DETAIL>,
@@ -43,6 +45,11 @@ export default function FeedDetailScreen({route, navigation}: Props) {
   const insets = useSafeAreaInsets();
   const {setMoveLocation} = useLocationStore();
   const detailOption = useModal();
+  const {setDetailPost} = useDetailPostStore();
+
+  useEffect(() => {
+    post && setDetailPost(post);
+  }, [post]);
 
   if (isPending || isError) {
     return <></>;
