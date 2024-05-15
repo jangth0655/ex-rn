@@ -12,14 +12,16 @@ import IonIcons from 'react-native-vector-icons/Ionicons';
 
 interface Props {
   imageUris: ImageUri[];
-  onDelete: (uri: string) => void;
+  onDelete?: (uri: string) => void;
   onChangeOrder?: (fromIndex: number, toIndex: number) => void;
+  showOption?: boolean;
 }
 
 export default function PreviewImageList({
   imageUris,
   onDelete,
   onChangeOrder,
+  showOption = false,
 }: Props) {
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -27,7 +29,6 @@ export default function PreviewImageList({
         {imageUris.map(({uri}, index) => (
           <Pressable key={index} style={styles.imageContainer}>
             <Image
-              resizeMode="cover"
               source={{
                 uri: `${
                   Platform.OS === 'ios'
@@ -36,38 +37,43 @@ export default function PreviewImageList({
                 }/${uri}`,
               }}
               style={styles.image}
+              resizeMode="cover"
             />
-            <Pressable
-              style={[styles.imageButton, styles.deleteButton]}
-              onPress={() => onDelete && onDelete(uri)}>
-              <IonIcons name="close" size={16} color={colors.WHITE} />
-            </Pressable>
+            {showOption && (
+              <>
+                <Pressable
+                  style={[styles.imageButton, styles.deleteButton]}
+                  onPress={() => onDelete && onDelete(uri)}>
+                  <IonIcons name="close" size={16} color={colors.WHITE} />
+                </Pressable>
 
-            {index > 0 && (
-              <Pressable
-                style={[styles.imageButton, styles.moveLeftButton]}
-                onPress={() =>
-                  onChangeOrder && onChangeOrder(index, index - 1)
-                }>
-                <IonIcons
-                  name="arrow-back-outline"
-                  size={16}
-                  color={colors.WHITE}
-                />
-              </Pressable>
-            )}
-            {index < imageUris.length - 1 && (
-              <Pressable
-                style={[styles.imageButton, styles.moveRightButton]}
-                onPress={() =>
-                  onChangeOrder && onChangeOrder(index, index + 1)
-                }>
-                <IonIcons
-                  name="arrow-forward-outline"
-                  size={16}
-                  color={colors.WHITE}
-                />
-              </Pressable>
+                {index > 0 && (
+                  <Pressable
+                    style={[styles.imageButton, styles.moveLeftButton]}
+                    onPress={() =>
+                      onChangeOrder && onChangeOrder(index, index - 1)
+                    }>
+                    <IonIcons
+                      name="arrow-back-outline"
+                      size={16}
+                      color={colors.WHITE}
+                    />
+                  </Pressable>
+                )}
+                {index < imageUris.length - 1 && (
+                  <Pressable
+                    style={[styles.imageButton, styles.moveRightButton]}
+                    onPress={() =>
+                      onChangeOrder && onChangeOrder(index, index + 1)
+                    }>
+                    <IonIcons
+                      name="arrow-forward-outline"
+                      size={16}
+                      color={colors.WHITE}
+                    />
+                  </Pressable>
+                )}
+              </>
             )}
           </Pressable>
         ))}

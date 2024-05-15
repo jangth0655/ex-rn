@@ -142,6 +142,7 @@ export default function AddPostScreen({route, navigation}: AddPostScreenProps) {
                 imageUris={imagePicker.imagesUris}
                 onDelete={imagePicker.deleteImageUri}
                 onChangeOrder={imagePicker.changeImageUrisOrder}
+                showOption
               />
             </ScrollView>
           </View>
