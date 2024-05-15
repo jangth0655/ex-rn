@@ -1,4 +1,4 @@
-import {colors} from '@/constants';
+import {colors, feedNavigator, mainNavigation} from '@/constants';
 import {useGetPost} from '@/hooks/queries/useGetPost';
 import {
   Dimensions,
@@ -15,6 +15,11 @@ import {CustomMarker} from '../common/CustomMarker';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {getDateWithSeparator} from '@/utils/date';
+import {CompositeNavigationProp, useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {FeedStackParamList} from '@/navigations/stack/FeedStackNavigator';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import {MainDrawerParamList} from '@/navigations/drawer/MainDrawerNavigator';
 
 interface Props {
   markerId: number | null;
@@ -22,17 +27,33 @@ interface Props {
   hide: () => void;
 }
 
+type Navigation = CompositeNavigationProp<
+  DrawerNavigationProp<MainDrawerParamList>,
+  StackNavigationProp<FeedStackParamList>
+>;
+
 export default function MarkerModal({markerId, isVisible, hide}: Props) {
+  const navigation = useNavigation<Navigation>();
   const {data: post, isPending, isError} = useGetPost(markerId);
 
   if (isPending || isError) {
     return <></>;
   }
 
+  const handlePressModal = () => {
+    navigation.navigate(mainNavigation.FEED, {
+      screen: feedNavigator.FEED_DETAIL,
+      params: {
+        id: post.id,
+      },
+      initial: false,
+    });
+  };
+
   return (
     <Modal visible={isVisible} transparent={true} animationType="slide">
       <SafeAreaView style={styles.optionBackground} onTouchEnd={hide}>
-        <Pressable style={styles.cardContainer} onPress={() => {}}>
+        <Pressable style={styles.cardContainer} onPress={handlePressModal}>
           <View style={styles.cardInner}>
             <View style={styles.cardAlign}>
               {post?.images.length > 0 && (

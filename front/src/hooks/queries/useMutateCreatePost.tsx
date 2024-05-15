@@ -10,24 +10,24 @@ function useMutateCreatePost(mutationOptions?: UseMutationCustomOptions) {
     mutationFn: createPost,
     onSuccess: newPost => {
       queryClient.invalidateQueries({
-        queryKey: [queryKey.MARKER, queryKey.GET_MARKERS],
+        queryKey: [queryKey.POST, queryKey.GET_POST],
       });
-      // queryClient.setQueryData<Marker[]>(
-      //   [queryKey.MARKER, queryKey.GET_MARKERS],
-      //   existingMarkers => {
-      //     const newMarker = {
-      //       id: newPost.id,
-      //       latitude: newPost.latitude,
-      //       longitude: newPost.longitude,
-      //       color: newPost.color,
-      //       score: newPost.score,
-      //     };
+      queryClient.setQueryData<Marker[]>(
+        [queryKey.MARKER, queryKey.GET_MARKERS],
+        existingMarkers => {
+          const newMarker = {
+            id: newPost.id,
+            latitude: newPost.latitude,
+            longitude: newPost.longitude,
+            color: newPost.color,
+            score: newPost.score,
+          };
 
-      //     return existingMarkers
-      //       ? [...existingMarkers, newMarker]
-      //       : [newMarker];
-      //   },
-      // );
+          return existingMarkers
+            ? [...existingMarkers, newMarker]
+            : [newMarker];
+        },
+      );
     },
     ...mutationOptions,
   });
