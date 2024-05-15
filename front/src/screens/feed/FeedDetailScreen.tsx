@@ -1,4 +1,10 @@
-import {colorHex, colors, feedNavigator} from '@/constants';
+import {
+  colorHex,
+  colors,
+  feedNavigator,
+  mainNavigation,
+  mapNavigation,
+} from '@/constants';
 import {useGetPost} from '@/hooks/queries/useGetPost';
 import {FeedStackParamList} from '@/navigations/stack/FeedStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -19,20 +25,33 @@ import {getDateLocateForm, getDateWithSeparator} from '@/utils/date';
 import PreviewImageList from '@/components/common/PreviewImageList';
 import CustomButton from '@/components/common/CustomButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {CompositeScreenProps} from '@react-navigation/native';
+import {DrawerScreenProps} from '@react-navigation/drawer';
+import {MainDrawerParamList} from '@/navigations/drawer/MainDrawerNavigator';
+import {useLocationStore} from '@/store/useLocation';
 
-type Props = StackScreenProps<
-  FeedStackParamList,
-  typeof feedNavigator.FEED_DETAIL
+type Props = CompositeScreenProps<
+  StackScreenProps<FeedStackParamList, typeof feedNavigator.FEED_DETAIL>,
+  DrawerScreenProps<MainDrawerParamList>
 >;
 
 export default function FeedDetailScreen({route, navigation}: Props) {
   const {id} = route.params;
   const {data: post, isPending, isError} = useGetPost(id);
   const insets = useSafeAreaInsets();
+  const {setMoveLocation} = useLocationStore();
 
   if (isPending || isError) {
     return <></>;
   }
+
+  const handlePressLocation = () => {
+    const {latitude, longitude} = post;
+    setMoveLocation({latitude, longitude});
+    navigation.navigate(mainNavigation.HOME, {
+      screen: mapNavigation.MAP_HOME,
+    });
+  };
 
   return (
     <>
@@ -139,7 +158,7 @@ export default function FeedDetailScreen({route, navigation}: Props) {
             label="위치보기"
             size="medium"
             variant="filled"
-            onPress={() => {}}
+            onPress={handlePressLocation}
           />
         </View>
       </View>
