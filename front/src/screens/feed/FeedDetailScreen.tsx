@@ -17,8 +17,8 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
-import {Text} from 'react-native-reanimated/lib/typescript/Animated';
 import Octicons from 'react-native-vector-icons/Octicons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {getDateLocateForm, getDateWithSeparator} from '@/utils/date';
@@ -29,6 +29,8 @@ import {CompositeScreenProps} from '@react-navigation/native';
 import {DrawerScreenProps} from '@react-navigation/drawer';
 import {MainDrawerParamList} from '@/navigations/drawer/MainDrawerNavigator';
 import {useLocationStore} from '@/store/useLocation';
+import {useModal} from '@/hooks/useModal';
+import FeedDetailOption from '@/components/feed/FeedDetailOption';
 
 type Props = CompositeScreenProps<
   StackScreenProps<FeedStackParamList, typeof feedNavigator.FEED_DETAIL>,
@@ -40,6 +42,7 @@ export default function FeedDetailScreen({route, navigation}: Props) {
   const {data: post, isPending, isError} = useGetPost(id);
   const insets = useSafeAreaInsets();
   const {setMoveLocation} = useLocationStore();
+  const detailOption = useModal();
 
   if (isPending || isError) {
     return <></>;
@@ -70,7 +73,12 @@ export default function FeedDetailScreen({route, navigation}: Props) {
               color={colors.WHITE}
               onPress={() => navigation.goBack()}
             />
-            <Ionicons name="ellipsis-vertical" size={30} color={colors.WHITE} />
+            <Ionicons
+              name="ellipsis-vertical"
+              size={30}
+              color={colors.WHITE}
+              onPress={detailOption.show}
+            />
           </View>
         </SafeAreaView>
         <View style={styles.imageContainer}>
@@ -162,6 +170,11 @@ export default function FeedDetailScreen({route, navigation}: Props) {
           />
         </View>
       </View>
+
+      <FeedDetailOption
+        isVisible={detailOption.isVisible}
+        hideOption={detailOption.hide}
+      />
     </>
   );
 }
