@@ -15,4 +15,9 @@ const mapNavigation = {
   ADD_POST: 'AddPost',
 } as const;
 
-export {authNavigation, mapNavigation, mainNavigation};
+const feedNavigator = {
+  FEED_HOME: 'FeedHome',
+  FEED_DETAIL: 'FeedDetail',
+} as const;
+
+export {authNavigation, mapNavigation, mainNavigation, feedNavigator};
