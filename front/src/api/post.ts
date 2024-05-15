@@ -20,15 +20,35 @@ const createPost = async (body: RequestCreatePost): Promise<ResponsePost> => {
 type ResponseSinglePost = ResponsePost & {isFavorite: boolean};
 
 const getPost = async (id: number): Promise<ResponseSinglePost> => {
-  const {data} = await axiosInstance.get(`/post/${id}`);
+  const {data} = await axiosInstance.get(`/posts/${id}`);
 
   return data;
 };
 
 const deletePost = async (id: number) => {
-  const {data} = await axiosInstance.delete(`/post/${id}`);
+  const {data} = await axiosInstance.delete(`/posts/${id}`);
   return data;
 };
 
-export {createPost, getPost, getPosts, deletePost};
-export type {ResponsePost, RequestCreatePost, ResponseSinglePost};
+type RequestUpdatePost = {
+  id: number;
+  body: Omit<Post, 'id' | 'longitude' | 'latitude' | 'address'> & {
+    imageUris: ImageUri[];
+  };
+};
+
+const updatePost = async ({
+  id,
+  body,
+}: RequestUpdatePost): Promise<ResponseSinglePost> => {
+  const {data} = await axiosInstance.patch(`/posts/${id}`, body);
+  return data;
+};
+
+export {createPost, getPost, getPosts, deletePost, updatePost};
+export type {
+  ResponsePost,
+  RequestCreatePost,
+  ResponseSinglePost,
+  RequestUpdatePost,
+};
