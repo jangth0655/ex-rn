@@ -1,8 +1,8 @@
 import {StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import InputField from '@/components/InputField';
+import InputField from '@/components/common/InputField';
 import {useForm} from '@/hooks/useForm';
-import CustomButton from '@/components/CustomButton';
+import CustomButton from '@/components/common/CustomButton';
 import {validateSignUp} from '@/utils';
 import {useRef} from 'react';
 import {TextInput} from 'react-native-gesture-handler';

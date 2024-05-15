@@ -19,9 +19,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useRef, useState} from 'react';
 import {useUserLocation} from '@/hooks/useUserLocation';
 import {mapStyle} from '@/style/mapStyle';
-import {CustomMarker} from '@/components/CustomMarker';
+import {CustomMarker} from '@/components/common/CustomMarker';
 import {useGetMarkers} from '@/hooks/queries/useGetMarkers';
-import MarkerModal from '@/components/MarkerModal';
+import MarkerModal from '@/components/map/MarkerModal';
 import {useModal} from '@/hooks/useModal';
 
 type Navigation = CompositeNavigationProp<

@@ -1,10 +1,14 @@
 import {ResponsePost} from '@/api';
-import {colors} from '@/constants';
+import {colors, feedNavigator} from '@/constants';
+import {FeedStackParamList} from '@/navigations/stack/FeedStackNavigator';
 import {getDateWithSeparator} from '@/utils/date';
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import {
   Dimensions,
   Image,
   Platform,
+  Pressable,
   StyleSheet,
   Text,
   View,
@@ -14,9 +18,17 @@ interface Props {
   post: ResponsePost;
 }
 
+type Navigation = StackNavigationProp<FeedStackParamList>;
+
 export default function FeedItem({post}: Props) {
+  const navigation = useNavigation<Navigation>();
+  const handlePressFeed = () => {
+    navigation.navigate(feedNavigator.FEED_DETAIL, {
+      id: post.id,
+    });
+  };
   return (
-    <View style={styles.container}>
+    <Pressable style={styles.container} onPress={handlePressFeed}>
       <View>
         {post.images.length > 0 && (
           <View key={post.id}>
@@ -49,7 +61,7 @@ export default function FeedItem({post}: Props) {
           </Text>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

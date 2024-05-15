@@ -1,5 +1,5 @@
 import {colors} from '@/constants';
-import HeaderButton from './HeaderButton';
+import HeaderButton from '../common/HeaderButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {CompositeNavigationProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';

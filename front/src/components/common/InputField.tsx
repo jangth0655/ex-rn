@@ -7,9 +7,9 @@ import {
   TextInputProps,
   View,
 } from 'react-native';
-import {colors} from '../constants';
+import {colors} from '../../constants';
 import {ForwardedRef, forwardRef, useRef} from 'react';
-import {mergeRefs} from '../utils';
+import {mergeRefs} from '../../utils';
 
 interface Props extends TextInputProps {
   disabled?: boolean;
