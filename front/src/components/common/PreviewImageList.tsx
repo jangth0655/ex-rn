@@ -1,5 +1,7 @@
-import {colors} from '@/constants';
+import {colors, feedNavigator} from '@/constants';
+import {FeedStackParamList} from '@/navigations/stack/FeedStackNavigator';
 import {ImageUri} from '@/types/domain';
+import {NavigationProp, useNavigation} from '@react-navigation/native';
 import {
   Image,
   Platform,
@@ -15,6 +17,7 @@ interface Props {
   onDelete?: (uri: string) => void;
   onChangeOrder?: (fromIndex: number, toIndex: number) => void;
   showOption?: boolean;
+  zoomEnabled?: boolean;
 }
 
 export default function PreviewImageList({
@@ -22,12 +25,26 @@ export default function PreviewImageList({
   onDelete,
   onChangeOrder,
   showOption = false,
+  zoomEnabled = false,
 }: Props) {
+  const navigation = useNavigation<NavigationProp<FeedStackParamList>>();
+
+  const handlePressImage = (index: number) => {
+    if (zoomEnabled) {
+      navigation.navigate(feedNavigator.IMAGE_ZOOM, {
+        index,
+      });
+    }
+  };
+
   return (
     <ScrollView horizontal showsHorizontalScrollIndicator={false}>
       <View style={styles.container}>
         {imageUris.map(({uri}, index) => (
-          <Pressable key={index} style={styles.imageContainer}>
+          <Pressable
+            key={index}
+            style={styles.imageContainer}
+            onPress={() => handlePressImage(index)}>
             <Image
               source={{
                 uri: `${

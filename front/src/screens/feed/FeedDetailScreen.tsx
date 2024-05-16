@@ -151,7 +151,7 @@ export default function FeedDetailScreen({route, navigation}: Props) {
 
         {post.images.length > 0 && (
           <View style={styles.imageContentsContainer}>
-            <PreviewImageList imageUris={post.images} />
+            <PreviewImageList imageUris={post.images} zoomEnabled />
           </View>
         )}
       </ScrollView>
