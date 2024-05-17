@@ -14,6 +14,7 @@ export const colors = {
   BLUE_500: '#0d8aff',
   GREEN_400: '#cce6b4',
   YELLOW_400: '#ffe594',
+  YELLOW_500: '#facc15',
   PURPLE_400: '#c4c4e7',
   WHITE: '#ffffff',
   BLACK: '#000000',

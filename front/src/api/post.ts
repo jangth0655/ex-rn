@@ -45,7 +45,25 @@ const updatePost = async ({
   return data;
 };
 
-export {createPost, getPost, getPosts, deletePost, updatePost};
+const getFavoritePost = async (page = 1): Promise<ResponsePost[]> => {
+  const {data} = await axiosInstance.get(`/favorite/my?page=${page}`);
+  return data;
+};
+
+const updateFavorite = async (id: number): Promise<number> => {
+  const {data} = await axiosInstance.post(`/favorite/${id}`);
+  return data;
+};
+
+export {
+  createPost,
+  getPost,
+  getPosts,
+  deletePost,
+  updatePost,
+  updateFavorite,
+  getFavoritePost,
+};
 export type {
   ResponsePost,
   RequestCreatePost,
