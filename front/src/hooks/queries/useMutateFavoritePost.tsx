@@ -11,6 +11,13 @@ function useMutateFavoritePost(mutationOption?: UseMutationCustomOptions) {
       queryClient.invalidateQueries({
         queryKey: [queryKey.POST, queryKey.GET_POST, updateId],
       });
+      queryClient.invalidateQueries({
+        queryKey: [
+          queryKey.POST,
+          queryKey.FAVORITE,
+          queryKey.GET_FAVORITE_POST,
+        ],
+      });
     },
     ...mutationOption,
   });
