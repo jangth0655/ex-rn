@@ -6,19 +6,21 @@ import DayOfWeeks from './DayOfWeeks';
 import {MonthYear, isSameAsCurrentDate} from '@/utils/date';
 import DateBox from './DateBox';
 
-interface Props {
+interface Props<T> {
   monthYear: MonthYear;
   onChangeMonth: (increment: number) => void;
   onPressDate: (date: number) => void;
   selectedDate: number;
+  schedules: Record<number, T>;
 }
 
-export default function Calendar({
+export default function Calendar<T>({
   monthYear,
   onChangeMonth,
   onPressDate,
   selectedDate,
-}: Props) {
+  schedules,
+}: Props<T>) {
   const {month, year, lastDate, firstDOW} = monthYear;
 
   return (
@@ -59,6 +61,7 @@ export default function Calendar({
               selectedDate={selectedDate}
               onPressDate={onPressDate}
               isToday={isSameAsCurrentDate(year, month, item.date)}
+              hasSchedule={Boolean(schedules[item.date])}
             />
           )}
           keyExtractor={item => String(item.id)}
