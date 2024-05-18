@@ -5,6 +5,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import DayOfWeeks from './DayOfWeeks';
 import {MonthYear, isSameAsCurrentDate} from '@/utils/date';
 import DateBox from './DateBox';
+import YearSelector from './YearSelector';
+import {useModal} from '@/hooks/useModal';
+import {useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import CalendarHomeHeaderRight from './CalendarHomeHeaderRight';
 
 interface Props<T> {
   monthYear: MonthYear;
@@ -12,6 +17,7 @@ interface Props<T> {
   onPressDate: (date: number) => void;
   selectedDate: number;
   schedules: Record<number, T>;
+  moveToToday: () => void;
 }
 
 export default function Calendar<T>({
@@ -20,8 +26,22 @@ export default function Calendar<T>({
   onPressDate,
   selectedDate,
   schedules,
+  moveToToday,
 }: Props<T>) {
   const {month, year, lastDate, firstDOW} = monthYear;
+  const yearSelector = useModal();
+  const navigation = useNavigation();
+
+  const handleChangeYear = (selectYear: number) => {
+    onChangeMonth((selectYear - year) * 12);
+    yearSelector.hide();
+  };
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerRight: () => CalendarHomeHeaderRight(moveToToday),
+    });
+  }, [moveToToday, navigation]);
 
   return (
     <>
@@ -31,7 +51,9 @@ export default function Calendar<T>({
           style={styles.monthButtonContainer}>
           <Ionicons name="arrow-back" size={25} color={colors.BLACK} />
         </Pressable>
-        <Pressable style={styles.monthYearContainer}>
+        <Pressable
+          style={styles.monthYearContainer}
+          onPress={yearSelector.show}>
           <Text style={styles.titleText}>
             {year}년 {month}월
           </Text>
@@ -68,6 +90,12 @@ export default function Calendar<T>({
           numColumns={7}
         />
       </View>
+      <YearSelector
+        isVisible={yearSelector.isVisible}
+        hide={yearSelector.hide}
+        currentYear={year}
+        onChangeYear={handleChangeYear}
+      />
     </>
   );
 }

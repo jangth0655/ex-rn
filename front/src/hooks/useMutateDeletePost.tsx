@@ -15,6 +15,9 @@ function useMutateDeletePost(mutationOptions?: UseMutationCustomOptions) {
       queryClient.invalidateQueries({
         queryKey: [queryKey.MARKER, queryKey.GET_MARKERS],
       });
+      queryClient.invalidateQueries({
+        queryKey: [queryKey.POST, queryKey.GET_CALENDAR_POST],
+      });
       // queryClient.setQueryData<Marker[]>([queryKey.MARKER], existingMarkers => {
       //   return existingMarkers?.filter(marker => marker.id !== deleteId);
       // });
