@@ -1,9 +1,17 @@
 import CustomButton from '@/components/common/CustomButton';
-import {authNavigation} from '@/constants';
+import {authNavigation, colors} from '@/constants';
 import {AuthStackParamList} from '@/navigations/stack/AuthStackNavigator';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Dimensions, Image, StyleSheet, View} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type AuthHomeScreenProps = StackScreenProps<
   AuthStackParamList,
@@ -22,14 +30,19 @@ export default function AuthHomeScreen({navigation}: AuthHomeScreenProps) {
       </View>
       <View style={styles.buttonContainer}>
         <CustomButton
-          label="로그인스크린으로 이동"
-          onPress={() => navigation.navigate('Login')}
+          label="카카오 로그인하기"
+          onPress={() => navigation.navigate(authNavigation.KAKAO)}
+          style={styles.kakaoButtonContainer}
+          textStyle={styles.kakaoButtonText}
+          icon={<Ionicons name="chatbubble-sharp" color={'#181500'} />}
         />
         <CustomButton
-          label="회원가입으로 이동"
-          variant="outlined"
-          onPress={() => navigation.navigate('SignUp')}
+          label="이메일 로그인하기"
+          onPress={() => navigation.navigate('Login')}
         />
+        <Pressable onPress={() => navigation.navigate(authNavigation.SIGNUP)}>
+          <Text style={styles.emailText}>이메일로 가입하기</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   );
@@ -48,5 +61,17 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
     gap: 10,
+  },
+  kakaoButtonContainer: {
+    backgroundColor: '#fee503',
+  },
+  kakaoButtonText: {
+    color: '#181600',
+  },
+  emailText: {
+    textDecorationColor: 'underline',
+    fontWeight: '500',
+    padding: 10,
+    color: colors.BLACK,
   },
 });

@@ -8,6 +8,7 @@ const authNavigation = {
   AUTH_HOME: 'AuthHome',
   LOGIN: 'Login',
   SIGNUP: 'SignUp',
+  KAKAO: 'kakao',
 } as const;
 
 const mapNavigation = {
