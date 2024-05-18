@@ -1,10 +1,22 @@
+import RetryErrorBoundary from '@/components/common/RetryErrorBoundary';
 import FeedList from '@/components/feed/FeedList';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Suspense} from 'react';
+import {
+  ActivityIndicator,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 export default function FeedHomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
-      <FeedList />
+      <RetryErrorBoundary>
+        <Suspense fallback={<ActivityIndicator />}>
+          <FeedList />
+        </Suspense>
+      </RetryErrorBoundary>
     </SafeAreaView>
   );
 }
