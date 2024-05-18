@@ -1,4 +1,4 @@
-import {colors} from '@/constants';
+import {colors, mainNavigation, settingNavigation} from '@/constants';
 import useAuth from '@/hooks/queries/useAuth';
 import {
   DrawerContentComponentProps,
@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/drawer';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function CustomDrawerContent(
   props: DrawerContentComponentProps,
@@ -16,6 +17,12 @@ export default function CustomDrawerContent(
 
   const handleLogout = () => {
     logoutMutation.mutate();
+  };
+
+  const handlePressSetting = () => {
+    props.navigation.navigate(mainNavigation.SETTING, {
+      screen: settingNavigation.SETTING_HOME,
+    });
   };
 
   return (
@@ -43,11 +50,16 @@ export default function CustomDrawerContent(
         </View>
         <DrawerItemList {...props} />
       </DrawerContentScrollView>
-      <Pressable
+      <View style={styles.bottomContainer}>
+        <Pressable style={styles.bottomMenu} onPress={handlePressSetting}>
+          <MaterialIcons name={'settings'} color={colors.GRAY_700} size={18} />
+        </Pressable>
+      </View>
+      {/* <Pressable
         onPress={handleLogout}
         style={{alignItems: 'flex-end', padding: 10}}>
         <Text>로그아웃</Text>
-      </Pressable>
+      </Pressable> */}
     </SafeAreaView>
   );
 }
@@ -78,5 +90,23 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 35,
     marginBottom: 15,
+  },
+  bottomContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    borderTopWidth: 1,
+    borderTopColor: colors.GRAY_200,
+  },
+  bottomMenu: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  bottomMenuText: {
+    fontWeight: '500',
+    fontSize: 15,
+    color: colors.GRAY_700,
   },
 });

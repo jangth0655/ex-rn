@@ -54,5 +54,23 @@ const logout = async () => {
   await axiosInstance.post('/auth/logout');
 };
 
-export {postSignup, postLogin, getProfile, getAccessToken, logout, kakaoLogin};
+type RequestProfile = Omit<
+  Profile,
+  'id' | 'email' | 'kakaoImageUri' | 'loginType'
+>;
+
+const editProfile = async (body: RequestProfile): Promise<RequestProfile> => {
+  const {data} = await axiosInstance.patch('/auth/me', body);
+  return data;
+};
+
+export {
+  postSignup,
+  postLogin,
+  getProfile,
+  getAccessToken,
+  logout,
+  kakaoLogin,
+  editProfile,
+};
 export type {RequestUser, ResponseToken, ResponseProfile};
